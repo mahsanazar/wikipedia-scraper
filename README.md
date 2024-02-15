@@ -4,17 +4,21 @@ The Wikipedia Scraper is a Python script that scrapes leader data from the Count
 
 ## Installation
 
-1. Clone the repository:
+## Cloning with GitHub and opening in Visual Studio Code
 
-git clone https://github.com/your-username/your-repository.git
+1. Open your web browser and navigate to the GitHub repository: https://github.com/mahsanazar/wikipedia-scraper
 
-2. Navigate to the project directory:
+2. Click on the "Code" button and then click on the clipboard icon to copy the repository URL.
 
-cd your-repository
+3. Open Visual Studio Code.
 
-3. Install the required dependencies:
+4. In Visual Studio Code, open the Command Palette by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac) and type "Git: Clone" and press `Enter`.
 
-pip install -r requirements.txt
+5. Paste the copied repository URL and press `Enter`.
+
+6. Choose the directory where you want to clone the repository and press `Enter`.
+
+7. Once the repository is cloned, navigate to the project directory
 
 ## Usage
 
