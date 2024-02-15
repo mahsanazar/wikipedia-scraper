@@ -66,7 +66,8 @@ class WikipediaScraper:
                             "first_name":leader['first_name'],
                             "last_name": leader['last_name'],
                             "wikipedia_url": leader['wikipedia_url'],
-                             "country": {country}
+                            "country": {country}
+                            
                         }
                         self.leader_info_list.append(leader_info)  # Store leader info in the list
                         print(f"Leader: {leader['first_name']} {leader['last_name']}, Country:{country} Wikipedia Link: {leader['wikipedia_url']}")
@@ -89,12 +90,15 @@ class WikipediaScraper:
                     last_name= leader_info ['last_name']
                     first_name= leader_info['first_name']
                     country=leader_info['country']
+                    #first_paragraph=leader_info['first_paragraph']
                   
                     response = requests.get(wikipedia_url)# it sent request for each leader's wikipedia url
                     if response.status_code == 200:# check if it is successful
                         soup = BeautifulSoup(response.text, 'html.parser')# after request, it request to parse it for each leader's wikipedia_url
                         first_paragraph = soup.find('p').get_text() # extract the first paragraph with tag p 
-                        print(f" Leader is :{first_name} {last_name} , Country :{country},  wikipedia_url is:  {wikipedia_url}: First paragpraph from this URL is : {first_paragraph}")
+                        #self.leader_info_list.append(first_paragraph)
+                        leader_info['first_paragraph'] = first_paragraph
+                        print(f" Leader is :{first_name} {last_name} , Country :{country},  wikipedia_url is:  {wikipedia_url}, First paragpraph from this URL is : {first_paragraph}")
                     else:
                         print(f"Failed to fetch page content for {wikipedia_url}")
         except requests.RequestException as e:
@@ -102,8 +106,23 @@ class WikipediaScraper:
         
     def to_json_file(self, filepath: str) -> None:
         #"""stores the data structure into a JSON file"""
+        
+        # Serialize leader_info_list including first_paragraph
+        serialized_data = []
+        for leader_info in self.leader_info_list:
+             serialized_leader_info = {
+                "first_name": leader_info["first_name"],
+                "last_name": leader_info["last_name"],
+                "wikipedia_url": leader_info["wikipedia_url"],
+                "country": leader_info["country"],
+                "first_paragraph": leader_info.get("first_paragraph", "")
+             }
+             serialized_data.append(serialized_leader_info)
+
+        # Write serialized data to JSON file
         with open(filepath, 'w') as json_file:
-            json.dump(self.leader_info_list, json_file, default=self.serialize)
+            json.dump(serialized_data, json_file, default=self.serialize)
+        
 
     def serialize(self, obj):
        """
