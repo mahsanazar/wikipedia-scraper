@@ -48,12 +48,13 @@ Myscraper.to_json_file('leaders_data.json')
 
 - It scrapes the first paragraph of each leader's Wikipedia page to provide additional details.
 
-- The data is then serialized and stored in a JSON file named 'leaders_data.json'.
+- The data is then serialized and stored in a JSON file named 'leaders_data.json'. AND 'leaders_data2.CSV'
 
 ## Dependencies
 
 - `requests`: Used for making HTTP requests to fetch data from the Country Leaders API.
 - `BeautifulSoup`: Utilized for parsing HTML content retrieved from Wikipedia pages.
 - `json`: Used for serializing Python objects into JSON format.
+-  `CSV` : The CSV library in Python provides functionality to read from and write to CSV files.
 
 

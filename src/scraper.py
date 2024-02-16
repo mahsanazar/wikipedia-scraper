@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import csv
 
 
 
@@ -95,7 +96,12 @@ class WikipediaScraper:
                     response = requests.get(wikipedia_url)# it sent request for each leader's wikipedia url
                     if response.status_code == 200:# check if it is successful
                         soup = BeautifulSoup(response.text, 'html.parser')# after request, it request to parse it for each leader's wikipedia_url
-                        first_paragraph = soup.find('p').get_text() # extract the first paragraph with tag p 
+                   
+                        paragraphs=soup.find('div', attrs={"class":"mw-body-content"}).find_all("p")
+                        for paragraph in paragraphs:
+                            if paragraph.find("b"):
+                                first_paragraph=paragraph.text
+                                break 
                         #self.leader_info_list.append(first_paragraph)
                         leader_info['first_paragraph'] = first_paragraph
                         print(f" Leader is :{first_name} {last_name} , Country :{country},  wikipedia_url is:  {wikipedia_url}, First paragpraph from this URL is : {first_paragraph}")
@@ -120,8 +126,9 @@ class WikipediaScraper:
              serialized_data.append(serialized_leader_info)
 
         # Write serialized data to JSON file
-        with open(filepath, 'w') as json_file:
+        with open(filepath, 'w', encoding='utf-8') as json_file:
             json.dump(serialized_data, json_file, default=self.serialize)
+            print("data has been successfully stored in json file")
         
 
     def serialize(self, obj):
@@ -142,6 +149,25 @@ class WikipediaScraper:
             return list(obj)
         # Add more custom serialization logic here if needed
        raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+    
+    def to_csv_file(self, filepath: str) -> None:
+        """Stores the data structure into a CSV file."""
+        try:
+            with open(filepath, mode='w', newline='', encoding='utf-8') as csv_file:
+                # The fieldnames list specifies the column names in the CSV file.
+                fieldnames = ['first_name', 'last_name', 'wikipedia_url', 'country', 'first_paragraph']
+                #csv.DictWriter object is created to write dictionaries to the CSV file.
+                
+                writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+                # The writer.writeheader() method in the csv.DictWriter object writes the header row to the CSV file
+                writer.writeheader()
+                #writer.writerow() method should only be called inside the loop to write each row of data
+                for leader_info in self.leader_info_list:
+                    writer.writerow(leader_info)
+                    
+            print(f"Data has been successfully written to CSV file ")
+        except Exception as e:
+            print(f"An error occurred while writing to CSV file: {e}")
 
 
 
