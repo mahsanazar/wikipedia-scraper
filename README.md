@@ -42,6 +42,10 @@ Myscraper.get_first_paragraph()
 
 Myscraper.to_json_file('leaders_data.json')
 
+6.  Writes the scraped leader data to a CSV file specified by the filepath parameter
+
+Myscraper.to_csv_file('leaders_data2'.CSV)
+
 ## Functionality
 
 - The `WikipediaScraper` class provides methods to fetch leader data from the Country Leaders API, including their first and last names, Wikipedia URLs, and associated countries.
